@@ -1,5 +1,3 @@
-// 2555428
-
 #ifndef ENTITY_H
 #define ENTITY_H
 
