@@ -52,7 +52,7 @@ int main(){
             return -1;
         }
 
-        int endCount = 0; //Checks for potential mills
+        int endCount = 0; //Checks for potential gameOver
 
         GameBoard board(boardFile);
 
