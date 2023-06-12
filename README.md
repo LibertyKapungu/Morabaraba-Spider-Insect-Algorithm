@@ -54,4 +54,4 @@ The program generates the following files:
 
 I developed this program as a semester project for a software development course. Being relatively new to programming in C++, there may be certain limitations or areas for improvement in the code. However, I have tried my best to create a functional Morabaraba game simulation. Any feedback or suggestions for enhancements are welcome.
 
-Before running the program, please ensure that you have the `startingCows.txt` file in the same directory as the `.h` files and `.cpp` files.
+Before running the program, please ensure that you have the `startingCows.txt` file in the same directory as the `.h` files and `.cpp` files. The number of cows should be a unique integer within the range of 3 to 12.
