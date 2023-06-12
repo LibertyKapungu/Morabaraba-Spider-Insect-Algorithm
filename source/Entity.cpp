@@ -86,9 +86,9 @@ int Entity::strategicPlacement(){
 
         for(int element: myPotentialMill){ //Search all my potential mills
 
-            if(element != m_moveHistory[m_moveHistory.size()-1] && element != m_moveHistory[m_moveHistory.size()-2]){ //The potential mill is not the same as the last 2 moves
+            if(element != m_moveHistory[m_moveHistory.size()-1] && element != m_moveHistory[m_moveHistory.size()-2]){ //The potential mill is not the same as the last 2 moves To prevent repetetive motion. This check was intended for the flying phase
 
-                goodPlace.push_back(element);                                                                         //my previous two moves. To prevent repetetive motion. This check was intended for the flying phase
+                goodPlace.push_back(element);                                                                        
             }
         }
 
@@ -127,14 +127,14 @@ int Entity::strategicPlacement(){
         goodPlace.clear();
     }
 
-    //Find an empty neighbor algorythm.
-    else if(freeSlots.size() != 0 && opponentPotentialMill.size() < 1 && myMoves.size() > 2){ //There are free slots and the player has made at lease two moves
+    //Find an empty neighbor algorithm.
+    else if(freeSlots.size() != 0 && opponentPotentialMill.size() < 1 && myMoves.size() > 2){
 
             for(int i = 0; i < static_cast<int>(myMoves.size()) - 2; i++){
 
                 for(int element : m_gameBoard->getEmptyNeighbor(myMoves[i])){
 
-                    if(element != m_moveHistory[m_moveHistory.size()-1] && element != m_moveHistory[m_moveHistory.size()-2]){ //Search all empty slots that weres froms previouse move history
+                    if(element != m_moveHistory[m_moveHistory.size()-1] && element != m_moveHistory[m_moveHistory.size()-2]){
 
                         emptyNeighbor.push_back(element);
                         goodPlace.push_back(element);
