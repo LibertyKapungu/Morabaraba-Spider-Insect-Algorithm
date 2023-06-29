@@ -30,7 +30,7 @@ The game progresses through two main phases: the placement phase and the movemen
 
 #### Flying Phase
 
-If a player is reduced to only three cows remaining on the board, the player enters the flying phase. During this phase, the player can "fly" cows to any vacant slots on the board, not just adjacent slots.
+7. If a player is reduced to only three cows remaining on the board, the player enters the flying phase. During this phase, the player can "fly" cows to any vacant slots on the board, not just adjacent slots.
 
 ### Goal
 
