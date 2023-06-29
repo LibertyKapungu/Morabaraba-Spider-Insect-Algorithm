@@ -16,9 +16,15 @@ public:
 
     Entity(GameBoard* gameBoard, char cow, char opponentCow, int numberOfStartingPieces);
 
+    //Placement Phase
     int randomPlacement();
     int strategicPlacement();
 
+    //Flying Phase
+    void randomFly();
+    void strategicFly();
+
+    //Movement Phase
     int moveRandomPiece();
     int moveStrategicPiece();
 
