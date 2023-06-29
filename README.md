@@ -1,6 +1,8 @@
-# Morabaraba-Spider-Insect-Algorithm
+# Morabaraba Algorithm
 
-This program simulates the traditional game of Morabaraba between two algorithms. The game involves two players, Player 1 and Player 2, who take turns placing and moving their cows on the board.
+This program simulates the traditional game of Morabaraba between two algorithms. The game involves two players, Player 1 and Player 2, who take turns placing and moving their cows on the board. The flying phase has not been implemented to reduce the occurrence of draws.
+
+![Project Images](images/project.svg)
 
 ## Game Setup
 
@@ -8,7 +10,7 @@ The number of starting cows is determined by reading an input file called `start
 
 ## Game Progression
 
-The game progresses through two main phases: the placement phase and the movement phase. The flying phase has not been implemented to reduce the occurrence of draws.
+The game progresses through two main phases: the placement phase and the movement phase.
 
 ### Placement Phase
 
@@ -38,6 +40,10 @@ The goal for each player is to form "mills" by placing three of their cows in a 
 
   In the movement phase, Player 1 uses a spider-insect algorithm. It identifies potential mills and designates an "insect" as the target slot that will result in a mill. The algorithm moves nearby cows, "spiders," closer to the target. If no suitable move is available, random movement is used. To avoid repetitive moves and illegal mills, the algorithm discourages selecting recently moved cows. When a valid mill is formed, Player 1 attacks.
 
+  ![Potential Mill](images/potentialMill.png)
+  <br>
+  Caption: This image shows a potential mill.
+
 - **Player 2**: This algorithm makes random moves without any specific strategy, serving as a simple opponent for Player 1.
 
 ## Output Files
@@ -52,6 +58,6 @@ The program generates the following files:
 
 ### Note from the Developer
 
-I developed this program as a semester project for a software development course. Being relatively new to programming in C++, there may be certain limitations or areas for improvement in the code. However, I have tried my best to create a functional Morabaraba game simulation. Any feedback or suggestions for enhancements are welcome.
+I successfully developed a functional Morabaraba game simulation as a semester project for my software development course. Although I am relatively new to programming in C++, I dedicated my best efforts to create this program. Any feedback or suggestions for improvements are welcome.
 
-Before running the program, please ensure that you have the `startingCows.txt` file in the same directory as the `.h` files and `.cpp` files. The number of cows should be a unique integer within the range of 3 to 12.
+Before running the program, please ensure that you have the `startingCows.txt` file in the same directory as the `.h` files and `.cpp` files.
