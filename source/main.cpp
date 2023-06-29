@@ -13,11 +13,12 @@
 using namespace std;
 
 void writeToFile(Entity& player, GameBoard& board, ofstream& outputFile, char entity, int startingPieces, string phase, int *endCount, ofstream& boardFile, char player1Char);
-bool endGame(GameBoard& board, int player1Pieces, int player2Pieces, int endCount, bool cannotMove1, bool cannotMove2 ,ofstream& outputFile, ofstream& logFile, ofstream& boardFile);
+bool endGame(GameBoard& board, char player1, char player2, int endCount, bool cannotMove1, bool cannotMove2 ,ofstream& outputFile, ofstream& logFile, ofstream& boardFile);
 
 
 int main(){
 
+    //Filenames
     string inputFilename = "startingCows.txt";
     string outputFilename = "morabarabaResults.txt";
     string logFilename = "statsLog.txt";
@@ -28,24 +29,27 @@ int main(){
     ofstream logFile;
     ofstream boardFile;
 
+    //Opening Files
     inputFile.open(inputFilename);
     outputFile.open(outputFilename);
     logFile.open(logFilename);
     boardFile.open(boardFilename);
-
-    char entity1 = 'X';
-    char entity2 = 'Y';
-
-    int startingPieces = 0;
-    int piecesOffBoard = startingPieces;
 
     if(!inputFile.is_open()){
 
         return -1;
     }
 
+    //Character representations of the algorithms
+    char entity1 = 'X';
+    char entity2 = 'Y';
+
+    int startingPieces = 0;
+    int piecesOffBoard = startingPieces;
+
     while(inputFile >> startingPieces){
 
+        //Validate if starting cows is within the correct range
         if(startingPieces > 12 || startingPieces < 3){
 
             outputFile << "ERROR: Invalid number of pieces ~ " << startingPieces;
@@ -54,8 +58,8 @@ int main(){
 
         int endCount = 0; //Checks for potential gameOver
 
+        //Objects
         GameBoard board(boardFile);
-
         Entity player1(&board, entity1, entity2, startingPieces); //smart player
         Entity player2(&board, entity2, entity1, startingPieces); //random player
 
@@ -91,9 +95,18 @@ int main(){
         boardFile << "--------------------    Movement Phase\n" << endl;
 
         //Movement phase
-        while(!endGame(board,startingPieces - player1.getPiecesTaken().size(), startingPieces - player2.getPiecesTaken().size(), endCount, player1.cannotMakeMove(), player2.cannotMakeMove(),outputFile,logFile,boardFile)){
+        while(!endGame(board, entity1, entity2, endCount, player1.cannotMakeMove(), player2.cannotMakeMove(),outputFile,logFile,boardFile)){
 
-            player1.moveStrategicPiece();
+            if( board.getCommonCowSlots(entity1).size() > 3){
+
+                player1.moveStrategicPiece();
+
+            } else {
+
+                player1.strategicFly();
+
+                boardFile << "P1 flew" << endl;
+            }
 
             writeToFile(player1, board,outputFile, entity1, startingPieces, "movement", &endCount, boardFile, entity1);
 
@@ -102,7 +115,16 @@ int main(){
                 break;
             }
 
-            player2.moveRandomPiece();
+            if( board.getCommonCowSlots(entity2).size() > 3){
+
+                player2.moveRandomPiece();
+
+            } else {
+
+                player2.randomFly();
+
+                boardFile << "P2 flew" << endl;
+            }
 
             writeToFile(player2,board,outputFile,entity2,startingPieces, "movement", &endCount, boardFile, entity1);
 
@@ -140,7 +162,10 @@ int main(){
 
 
 //Function checks if the game is over and outputs the relevant information to the files, such as the winner
-bool endGame(GameBoard& board, int player1Pieces, int player2Pieces, int endCount, bool cannotMove1, bool cannotMove2 ,ofstream& outputFile, ofstream& logFile, ofstream& boardFile){
+bool endGame(GameBoard& board, char player1, char player2, int endCount, bool cannotMove1, bool cannotMove2 ,ofstream& outputFile, ofstream& logFile, ofstream& boardFile){
+
+    int player1Pieces = board.getCommonCowSlots(player1).size();
+    int player2Pieces = board.getCommonCowSlots(player2).size();
 
     if(player1Pieces == 2 || cannotMove2){
 
@@ -226,11 +251,9 @@ bool endGame(GameBoard& board, int player1Pieces, int player2Pieces, int endCoun
 void writeToFile(Entity& player, GameBoard& board, ofstream& outputFile, char entity, int startingPieces, string phase, int *endCount, ofstream& boardFile, char player1Char){
 
     string attackedChar;
-
     string placementChar;
 
     vector<int> moveHistory = player.getMoveHistory();
-
     vector<int> millsOnBoard = board.mills(entity);
 
     if(entity == player1Char){
