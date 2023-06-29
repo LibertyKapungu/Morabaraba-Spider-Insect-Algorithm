@@ -110,7 +110,7 @@ int main(){
 
             writeToFile(player1, board,outputFile, entity1, startingPieces, "movement", &endCount, boardFile, entity1);
 
-            if(endGame(board,startingPieces - player1.getPiecesTaken().size(), startingPieces - player2.getPiecesTaken().size(), endCount, player1.cannotMakeMove(), player2.cannotMakeMove(),outputFile,logFile,boardFile)){
+            if(endGame(board, entity1, entity2, endCount, player1.cannotMakeMove(), player2.cannotMakeMove(),outputFile,logFile,boardFile)){
 
                 break;
             }
@@ -128,7 +128,7 @@ int main(){
 
             writeToFile(player2,board,outputFile,entity2,startingPieces, "movement", &endCount, boardFile, entity1);
 
-            if(endGame(board,startingPieces - player1.getPiecesTaken().size(), startingPieces - player2.getPiecesTaken().size(), endCount, player1.cannotMakeMove(), player2.cannotMakeMove(),outputFile,logFile,boardFile)){
+            if(endGame(board, entity1, entity2, endCount, player1.cannotMakeMove(), player2.cannotMakeMove(),outputFile,logFile,boardFile)){
 
                 break;
             }
@@ -167,7 +167,7 @@ bool endGame(GameBoard& board, char player1, char player2, int endCount, bool ca
     int player1Pieces = board.getCommonCowSlots(player1).size();
     int player2Pieces = board.getCommonCowSlots(player2).size();
 
-    if(player1Pieces == 2 || cannotMove2){
+    if(player2Pieces == 2 || cannotMove2){
 
         outputFile << '\n';
         outputFile << "P1 wins" << '\n';
@@ -182,7 +182,7 @@ bool endGame(GameBoard& board, char player1, char player2, int endCount, bool ca
         return true;
     }
 
-    else if(player2Pieces == 2 || cannotMove1){
+    else if(player1Pieces == 2 || cannotMove1){
 
         outputFile << '\n';
         outputFile << "P2 wins" << '\n';
