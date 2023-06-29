@@ -27,24 +27,6 @@ int Entity::randomPlacement(){
 
     int randElement = freeSlots[randIndex]; //Picks a random free slot on the board
 
-    //This part of the random movement was intitially developed for the flying phase to make future expansion much easier.
-    //This function would have been placed in randomMovement for the flying phase.
-    if(!m_moveHistory.empty()){
-
-        while(m_moveHistory[m_moveHistory.size()-1] == randElement || randElement == m_moveHistory[m_moveHistory.size()-2]){ //Discourage moving the same piece already moved
-
-            if(m_moveHistory[m_moveHistory.size()-1] == randElement || randElement == m_moveHistory[m_moveHistory.size()-2]){ //Discourage moving the same cow back and forth
-
-                randIndex = rand() % freeSlots.size();
-                randElement = freeSlots[randIndex];
-            }
-            else{
-
-                break;
-            }
-        }
-    }
-
     m_gameBoard -> placeCow(randElement, m_cow);
     m_moveHistory.push_back(randElement);
 
@@ -52,22 +34,83 @@ int Entity::randomPlacement(){
 }
 
 
+void Entity::randomFly(){
+
+    std::vector<int> freeSlots = m_gameBoard -> getFreeSlots();
+    std::vector<int> availableCows = m_gameBoard ->getCommonCowSlots(m_cow);
+
+    int randIndex = rand() % freeSlots.size();
+    int randElement = freeSlots[randIndex]; //Picks a random free slot on the board
+
+    int randAvailableIndex = rand() % availableCows.size();
+    int firstAvailableCow = availableCows[randAvailableIndex];
+
+    m_gameBoard -> removeCow( firstAvailableCow );
+    m_moveHistory.push_back(firstAvailableCow);
+
+    m_gameBoard ->placeCow( randElement, m_cow);
+    m_moveHistory.push_back( randElement);
+}
+
+
+void Entity::strategicFly(){
+
+    std::vector<int> freeSlots = m_gameBoard -> getFreeSlots();
+    std::vector<int> availableCows = m_gameBoard -> getCommonCowSlots(m_cow);
+    std::vector<int> milledCows = m_gameBoard -> getUniqueCowsInMills(m_cow);
+    std::vector<int> potentialMills = m_gameBoard ->mostLikelySlotToFormMill(m_cow);
+
+    int spider = -1;
+    int insect = -1;
+
+    //Break old mills to form new mills
+    if(milledCows.size() != 0){
+
+        int randAvailableIndex = rand() % availableCows.size();
+        spider = availableCows[randAvailableIndex];
+
+    }else{
+
+        spider = availableCows[0];
+    }
+
+    m_gameBoard->removeCow(spider);
+    m_moveHistory.push_back(spider);
+
+    if(potentialMills.size() != 0){
+
+        for(int element : potentialMills){
+
+            if(element != m_moveHistory[m_moveHistory.size() - 1] && element != m_moveHistory[m_moveHistory.size() - 2] && element != m_moveHistory[m_moveHistory.size() - 3]){
+
+                insect = element;
+
+                break;
+
+            } else {
+                insect = freeSlots[0];
+            }
+        }
+
+    } else {
+
+        insect = freeSlots[0];
+    }
+
+    m_gameBoard -> placeCow(insect, m_cow);
+    m_moveHistory.push_back(insect);
+}
+
+
 int Entity::strategicPlacement(){
 
-    std::vector <int> freeSlots = m_gameBoard->getFreeSlots();
-
+    std::vector<int> freeSlots = m_gameBoard->getFreeSlots();
     std::vector<int> myCows = m_gameBoard -> getCommonCowSlots(m_cow);
-
     std::vector<int> opponentCows = m_gameBoard ->getCommonCowSlots(m_opponentCow);
-
     std::vector<int> myPotentialMill = m_gameBoard ->mostLikelySlotToFormMill(m_cow);
-
     std::vector<int> opponentPotentialMill = m_gameBoard ->mostLikelySlotToFormMill(m_opponentCow);
-
     std::vector<int> emptyNeighbor;
-
     std::vector<int> myMoves = m_moveHistory;
-
     std::vector<int> goodPlace;
 
     if(m_gameBoard -> getCommonCowSlots(m_cow).size() < 1){ //There are no cows placed on the board, so place randomly
@@ -88,7 +131,7 @@ int Entity::strategicPlacement(){
 
             if(element != m_moveHistory[m_moveHistory.size()-1] && element != m_moveHistory[m_moveHistory.size()-2]){ //The potential mill is not the same as the last 2 moves To prevent repetetive motion. This check was intended for the flying phase
 
-                goodPlace.push_back(element);                                                                        
+                goodPlace.push_back(element);
             }
         }
 
@@ -226,7 +269,6 @@ int Entity::moveRandomPiece(){
 
 
     int randIndex2 = rand() % possibleMoves.size();
-
     int randNeighbor = possibleMoves[randIndex2]; //Picks a random cow
 
     recalculate = 0;
@@ -271,13 +313,10 @@ bool Entity::cannotMakeMove(){
 int Entity::moveStrategicPiece(){
 
     int spider = -1; //The desired cow
-
     int insect = -1; //The target slot for the desired cow.
 
     std::vector<int> myPotentialMill = m_gameBoard->mostLikelySlotToFormMill(m_cow);
-
     std::vector<int> myCows = m_gameBoard->getCommonCowSlots(m_cow);
-
     std::vector<int> freeSlots = m_gameBoard->getFreeSlots();
 
     bool canSelectStrat = true;
@@ -401,7 +440,6 @@ int Entity::randomAttack(){
     bool opponentAllMilled = m_gameBoard -> allCowsInMills(m_opponentCow); //Checks if all the opponents pieces are in mills
 
     std::vector<int> opponentCows = m_gameBoard -> getCommonCowSlots(m_opponentCow); //All the locationns of oponent cows
-
     std::vector<int> opponentMilledCows = m_gameBoard -> getUniqueCowsInMills(m_opponentCow); //all opponents milled cows
 
     if(opponentAllMilled){ //If all the opponents cows are in mills, take any random cow from opponent
@@ -410,9 +448,7 @@ int Entity::randomAttack(){
         int randElement = opponentCows[randIndex];
 
         m_piecesTaken.push_back(randElement);
-
         m_gameBoard->removeCow(randElement);
-
         m_verifiedMills.erase(randElement); //Remove from valid milled cow since there is nolonger a valid mill
 
         return randElement;
