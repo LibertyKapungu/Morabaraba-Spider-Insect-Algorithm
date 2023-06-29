@@ -1,6 +1,6 @@
 # Morabaraba Algorithm
 
-This program simulates the traditional game of Morabaraba between two algorithms. The game involves two players, Player 1 and Player 2, who take turns placing and moving their cows on the board. The flying phase has not been implemented to reduce the occurrence of draws.
+This program simulates the traditional game of Morabaraba between two algorithms. The game involves two players, Player 1 and Player 2, who take turns placing and moving their cows on the board.
 
 ![Project Images](images/project.svg)
 
@@ -27,6 +27,10 @@ The game progresses through two main phases: the placement phase and the movemen
 5. Players take turns moving their cows along the lines on the board to adjacent empty intersection points.
 
 6. The game ends when one player has only two cows remaining, making them unable to form a mill, or when one player has no legal moves left.
+
+#### Flying Phase
+
+If a player is reduced to only three cows remaining on the board, the player enters the flying phase. During this phase, the player can "fly" cows to any vacant slots on the board, not just adjacent slots.
 
 ### Goal
 
