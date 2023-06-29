@@ -1,4 +1,4 @@
-# Morabaraba Algorithm
+# Morabaraba Spider-Insect Algorithm
 
 This program simulates the traditional game of Morabaraba between two algorithms. The game involves two players, Player 1 and Player 2, who take turns placing and moving their cows on the board.
 
