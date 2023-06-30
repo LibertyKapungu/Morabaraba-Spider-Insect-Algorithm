@@ -11,7 +11,6 @@
 Entity::Entity(GameBoard* gameBoard, char cow, char opponentCow, int numberOfStartingPieces)
 : m_gameBoard(gameBoard), m_cow(cow), m_opponentCow(opponentCow), m_numberOfStartingPieces(numberOfStartingPieces){
 
-    srand(static_cast<unsigned int>(time(nullptr)));
     m_moveHistory.clear();
     m_verifiedMills.clear();
     m_piecesTaken.clear();
