@@ -18,6 +18,8 @@ bool endGame(GameBoard& board, char player1, char player2, int endCount, bool ca
 
 int main(){
 
+    srand(time(NULL)); //seed for random numbers
+    
     //Filenames
     string inputFilename = "startingCows.txt";
     string outputFilename = "morabarabaResults.txt";
